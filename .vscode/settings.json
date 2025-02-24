@@ -1,0 +1,8 @@
+{
+    "cmake.sourceDirectory": "/home/hvahib/fractol/MLX42",
+    "files.associations": {
+        "functional": "c",
+        "random": "c",
+        "fractol.h": "c"
+    }
+}
