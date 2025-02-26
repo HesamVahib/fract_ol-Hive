@@ -1,15 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvahib <hvahib@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 15:24:56 by hvahib            #+#    #+#             */
+/*   Updated: 2025/02/26 23:45:07 by hvahib           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FRACTOL_H
 # define FRACTOL_H
 # include <math.h>
 # include <unistd.h>
-# include <MLX42/MLX42.h>
+# include "MLX42/MLX42.h"
 # include "libft/libft.h"
+# include <stdbool.h>
 
+# define MAX_LENGTH 960
+# define MAX_WIDTH 960
 
-typedef struct s_complex // this is the imaginary and the real part  of the number for C
+typedef struct s_complex
 {
 	double	real;
-	double	imag;
+	double	img;
 }	t_complex;
 
 typedef struct s_fractol
@@ -27,17 +42,12 @@ typedef struct s_fractol
 }	t_fractol;
 
 void	image_filling(char set, char *str1, char *str2, t_fractol *params);
-
-// //utils.c
-void	escape_bt(void *fractol);
+void	escape_bt(mlx_key_data_t keydata, void *fractol);
 double	ft_atof(char *str);
 void	zooming(double xdelta, double ydelta, void *param);
-// int		check_number(const char *s1);
-// //colouring.c
 int32_t	pixel_color(int32_t r, int32_t g, int32_t b, int32_t a);
-void	outside_painting(int iter, int i, int j, t_fractol *fractol);
-void	inside_painting(double iter, int i, int j, t_fractol *fractol);
-
+void	drawing(void *fractol);
+void	painting(int iter, int i, int j, t_fractol *fractol);
 void	run_mandelbrot(t_fractol *fractol);
 void	run_julia(t_fractol *params);
 

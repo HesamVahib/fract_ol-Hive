@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   painting.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvahib <hvahib@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 15:22:05 by hvahib            #+#    #+#             */
+/*   Updated: 2025/02/26 23:49:30 by hvahib           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 int32_t	pixel_color(int32_t r, int32_t g, int32_t b, int32_t a)
@@ -5,42 +17,27 @@ int32_t	pixel_color(int32_t r, int32_t g, int32_t b, int32_t a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	outside_painting(int iter, int i, int j, t_fractol *fractol)
+void	painting(int iter, int i, int j, t_fractol *fractol)
 {
-	if (iter < 3)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(38, 115, 157, 200)); // I gotta change these colors
-	else if (iter < 5)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(252, 98, 111, 200));
-	else if (iter < 10)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(255, 210, 73, 200));
-	else
-		mlx_put_pixel(fractol->image, i, j, pixel_color(36, 17, 12, 200));
+	double	ratio;
+	int		r;
+	int		g;
+	int		b;
+
+	ratio = (double)iter / fractol->max_iteration;
+	r = (int)(9 * (1 - ratio) * ratio * ratio * ratio * 255);
+	g = (int)(15 * (1 - ratio) * (1 - ratio) * ratio * ratio * 255);
+	b = (int)(8.5 * (1 - ratio) * (1 - ratio) * (1 - ratio) * ratio * 255);
+	mlx_put_pixel(fractol->image, i, j, pixel_color(r, g, b, 255));
 }
 
-void	inside_painting(double iter, int i, int j, t_fractol *fractol)
+void	drawing(void *fractol)
 {
-	if (iter < 10)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(221, 97, 55, 200));
-	else if (iter < 25)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(239, 171, 104, 200));
-	else if (iter < 30)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(253, 251, 118, 200));
-	else if (iter < 50)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(227, 169, 96, 200));
-	else if (iter < 70)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(82, 148, 107, 200));
-	else if (iter < 90)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(79, 133, 154, 200));
-	else if (iter < 100)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(108, 182, 177, 200));
-	else if (iter < 200)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(255, 144, 31, 200));
-	else if (iter < 400)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(255, 41, 117, 200));
-	else if (iter < 600)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(199, 0, 181, 200));
-	else if (iter < 800)
-		mlx_put_pixel(fractol->image, i, j, pixel_color(176, 0, 255, 200));
+	t_fractol	*temp;
+
+	temp = (t_fractol *)fractol;
+	if (temp->c == 'M')
+		run_mandelbrot(temp);
 	else
-		mlx_put_pixel(fractol->image, i, j, pixel_color(0, 219, 150, 200));
+		run_julia(temp);
 }

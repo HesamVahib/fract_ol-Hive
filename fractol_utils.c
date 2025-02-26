@@ -1,24 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvahib <hvahib@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 15:21:40 by hvahib            #+#    #+#             */
+/*   Updated: 2025/02/26 23:39:42 by hvahib           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 void	zooming(double xdelta, double ydelta, void *params)
 {
-	(void)xdelta;
 	t_fractol	*fractol;
 
+	(void)xdelta;
 	fractol = (t_fractol *)params;
-	ydelta *= 5; // here by changing this number smething happens
+	ydelta *= 10;
 	if (ydelta < 0)
 	{
-		fractol->zoom = fractol->zoom / 1.05;
-		if (fractol->max_iteration > 50 && fractol->c == 'M')
-			fractol->max_iteration = fractol->max_iteration - 50;
+		fractol->zoom *= 1.25;
+		if (fractol->max_iteration < 512 && fractol->c == 'M')
+			fractol->max_iteration += 50;
 	}
 	else if (ydelta > 0)
-		fractol->zoom = fractol->zoom * 1.05;
-	if (fractol->c == 'M')
-		run_mandelbrot(fractol);
-	else
-		run_julia(fractol);
+	{
+		fractol->zoom /= 1.25;
+		if (fractol->max_iteration > 10 && fractol->c == 'M')
+			fractol->max_iteration -= 10;
+	}
 }
 
 int	sign_check(char c)
@@ -60,11 +72,11 @@ double	ft_atof(char *str)
 	return (nbr + nbr_dot);
 }
 
-void	escape_bt(void *fractol)
+void	escape_bt(mlx_key_data_t keydata, void *fractol)
 {
 	mlx_t	*mlx;
 
 	mlx = fractol;
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
+	if (keydata.key == MLX_KEY_ESCAPE)
 		mlx_close_window(mlx);
 }

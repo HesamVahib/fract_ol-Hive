@@ -1,12 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvahib <hvahib@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 15:21:59 by hvahib            #+#    #+#             */
+/*   Updated: 2025/02/26 23:41:39 by hvahib           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 int	create_window(char set, char *str1, char *str2, t_fractol *fractol)
 {
-	mlx_loop_hook(fractol->mlx, escape_bt, fractol->mlx); // enabling ESCAPE button
+	if (!fractol->mlx)
+		return (1);
+	mlx_key_hook(fractol->mlx, escape_bt, fractol->mlx);
+	mlx_loop_hook(fractol->mlx, drawing, fractol);
 	image_filling(set, str1, str2, fractol);
 	mlx_scroll_hook(fractol->mlx, zooming, fractol);
-	mlx_loop(fractol->mlx); // making the loop for the screen
-	mlx_terminate(fractol->mlx); // after escape it frees the memory and close it
+	mlx_loop(fractol->mlx);
+	mlx_terminate(fractol->mlx);
 	return (0);
 }
 
@@ -52,13 +67,13 @@ int	init_fractol(t_fractol *fractol)
 	fractol->x0 = 0;
 	fractol->y0 = 0;
 	fractol->zoom = 1.00;
-	fractol->max_iteration = 1000;
-	fractol->mlx = mlx_init(1080, 1080, "Fractal", false); // initializing a picture 1080 in 1080
+	fractol->max_iteration = 512;
+	fractol->mlx = mlx_init(MAX_LENGTH, MAX_WIDTH, "Fractal", false);
 	if (!(fractol->mlx))
-		return (mlx_close_window(fractol->mlx), 1); // if there is an error increase the number to show the error 
-	fractol->image = mlx_new_image(fractol->mlx, 1080, 1080);
+		return (mlx_close_window(fractol->mlx), 1);
+	fractol->image = mlx_new_image(fractol->mlx, MAX_LENGTH, MAX_WIDTH);
 	if (!(fractol->image) || \
-	      (mlx_image_to_window(fractol->mlx, fractol->image, 0, 0) == -1)) // if the imae does not exist or image has not changet to the window
+			(mlx_image_to_window(fractol->mlx, fractol->image, 0, 0) == -1))
 		return (mlx_close_window(fractol->mlx), 1);
 	return (0);
 }
@@ -68,13 +83,13 @@ int	main(int argc, char **argv)
 	int			res;
 	t_fractol	fractol;
 
-	if (init_fractol(&fractol) != 0 || (argc < 2 || argc > 4 || argc == 3)) // initializing the screen an avoiding error forlack of args
+	if (init_fractol(&fractol) != 0 || (argc < 2 || argc > 4 || argc == 3))
 		return (init_error_handling(), 0);
 	else if (argc == 2)
 	{
-		res = ft_strncmp(argv[1], "Mandelbrot", 11); // if it is including Mandelbrot
-		if (res != 0) // if it is not true the user enetered Mandelbrot
-			res = ft_strncmp(argv[1], "Julia", 6); // otherwise if it is including Julia | WHAT IF IT HAS JUST JULIA?????
+		res = ft_strncmp(argv[1], "Mandelbrot", 11);
+		if (res != 0)
+			res = ft_strncmp(argv[1], "Julia", 6);
 		if (res == 0 && create_window(argv[1][0], NULL, NULL, &fractol) == 0)
 			return (0);
 	}
@@ -86,7 +101,4 @@ int	main(int argc, char **argv)
 			create_window(argv[1][0], argv[2], argv[3], &fractol) == 0)
 			return (0);
 	}
-	else
-		return (0); // maybe it should be return (0) not in else
-    // AND another else ???
 }
