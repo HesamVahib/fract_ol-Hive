@@ -6,7 +6,7 @@
 /*   By: hvahib <hvahib@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:02 by hvahib            #+#    #+#             */
-/*   Updated: 2025/02/26 23:41:20 by hvahib           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:22:46 by hvahib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	run_mandelbrot(t_fractol *fractol)
 			res = is_inside_mandelbrot(i, j, fractol);
 			if (res == 1)
 				mlx_put_pixel(fractol->image, i, j, \
-				pixel_color(79, 133, 154, 200));
+				pixel_color(0, 0, 154, 255));
 			j++;
 		}
 		i++;

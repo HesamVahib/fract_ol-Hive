@@ -6,7 +6,7 @@
 /*   By: hvahib <hvahib@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:33 by hvahib            #+#    #+#             */
-/*   Updated: 2025/02/26 23:41:20 by hvahib           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:20:07 by hvahib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ double	is_inside_julia(int i, int j, t_fractol *fractol)
 		iter++;
 	}
 	if (iter == fractol->max_iteration)
-		return (0);
+		return (iter);
 	else
 		painting(iter, i, j, fractol);
-	return (iter);
+	return (0);
 }
 
 void	run_julia(t_fractol *fractol)

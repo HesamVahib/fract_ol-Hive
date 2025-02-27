@@ -1,5 +1,0 @@
-{
-   ignore_folder
-   Memcheck:Leak
-   fun:Mlx*
-}
